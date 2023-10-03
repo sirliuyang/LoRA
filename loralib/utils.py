@@ -23,9 +23,9 @@ def mark_only_lora_as_trainable(model: nn.Module, bias: str = 'none') -> None:
     elif bias == 'lora_only':
         for m in model.modules():
             if isinstance(m, LoRALayer) and \
-                hasattr(m, 'bias') and \
-                m.bias is not None:
-                    m.bias.requires_grad = True
+                    hasattr(m, 'bias') and \
+                    m.bias is not None:
+                m.bias.requires_grad = True
     else:
         raise NotImplementedError
 
@@ -41,7 +41,7 @@ def lora_state_dict(model: nn.Module, bias: str = 'none') -> Dict[str, torch.Ten
         for k in my_state_dict:
             if 'lora_' in k:
                 to_return[k] = my_state_dict[k]
-                bias_name = k.split('lora_')[0]+'bias'
+                bias_name = k.split('lora_')[0] + 'bias'
                 if bias_name in my_state_dict:
                     to_return[bias_name] = my_state_dict[bias_name]
         return to_return
