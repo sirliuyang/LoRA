@@ -5,7 +5,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
 import math
 from typing import List
 
@@ -18,15 +17,25 @@ class LoRALayer:
             lora_dropout: float,
             merge_weights: bool,
     ):
-        self.r = r
-        self.lora_alpha = lora_alpha
-        # Optional dropout
+        # Initialize the LoRALayer with the provided parameters:
+        # - r: An integer parameter
+        # - lora_alpha: An integer parameter
+        # - lora_dropout: A float parameter specifying optional dropout rate
+        # - merge_weights: A boolean flag indicating whether weights should be merged
+
+        self.r = r  # Store the 'r' parameter as an instance variable
+        self.lora_alpha = lora_alpha  # Store the 'lora_alpha' parameter as an instance variable
+
+        # Optional dropout:
         if lora_dropout > 0.:
-            self.lora_dropout = nn.Dropout(p=lora_dropout)
+            self.lora_dropout = nn.Dropout(p=lora_dropout)  # Create a dropout layer with the given rate
         else:
-            self.lora_dropout = lambda x: x
-        # Mark the weight as unmerged
+            self.lora_dropout = lambda x: x  # If dropout rate is 0, use an identity function
+
+        # Initialize 'merged' flag as False to mark the weight as unmerged
         self.merged = False
+
+        # Store the 'merge_weights' parameter as an instance variable
         self.merge_weights = merge_weights
 
 
